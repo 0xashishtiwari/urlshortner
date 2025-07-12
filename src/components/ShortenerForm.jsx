@@ -6,13 +6,13 @@ const ShortenerForm = () => {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // 🌀 Loader state
+  const [loading, setLoading] = useState(false); // 🌀 loader state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setShortUrl('');
-    setLoading(true); // Start loader
+    setLoading(true);
 
     if (!url) {
       setError('Please enter a URL');
@@ -26,18 +26,12 @@ const ShortenerForm = () => {
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong');
     } finally {
-      setLoading(false); // Stop loader
+      setLoading(false);
     }
   };
 
   return (
     <div className="form-wrapper">
-      {loading && (
-        <div className="loader-overlay">
-          <div className="loader"></div>
-        </div>
-      )}
-
       <form onSubmit={handleSubmit} className="shortener-form">
         <input
           type="text"
@@ -46,7 +40,9 @@ const ShortenerForm = () => {
           onChange={(e) => setUrl(e.target.value)}
           className="form-input"
         />
-        <button type="submit" className="form-button">Shorten</button>
+        <button type="submit" className="form-button" disabled={loading}>
+          {loading ? <div className="button-spinner"></div> : 'Shorten'}
+        </button>
       </form>
 
       {shortUrl && (

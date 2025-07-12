@@ -4,13 +4,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #f4f4f4;
-  font-family: 'Segoe UI', sans-serif;
-  color: #333;
+  color: white;
+  text-align: center;
 }
 
 .gif-spinner {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 12px;
+  width: 120px; /* 🔼 Increased size */
+  height: 120px;
+  margin-bottom: 16px;
 }

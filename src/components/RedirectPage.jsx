@@ -1,22 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './RedirectPage.css';
 
 const RedirectPage = () => {
   const { shortcode } = useParams();
+  const [status, setStatus] = useState('loading');
 
   useEffect(() => {
-    const redirectToBackend = async () => {
-      window.location.href = `https://urldb.up.railway.app/${shortcode}`;
+    const fetchUrl = async () => {
+      try {
+        const res = await fetch(`https://urldb.up.railway.app/${shortcode}`);
+        const data = await res.json();
+
+        if (data?.url) {
+          window.location.href = data.url;
+        } else {
+          setStatus('notfound');
+        }
+      } catch {
+        setStatus('error');
+      }
     };
 
-    redirectToBackend();
+    fetchUrl();
   }, [shortcode]);
 
   return (
-    <div className="redirect-loader-wrapper">
-      <div className="redirect-spinner"></div>
-      <p>Redirecting to your destination...</p>
+    <div className="redirect-page">
+      {status === 'loading' && (
+        <>
+          <div className="spinner"></div>
+          <p>Redirecting...</p>
+        </>
+      )}
+      {status === 'notfound' && <p>❌ Link not found</p>}
+      {status === 'error' && <p>⚠️ Failed to fetch URL</p>}
     </div>
   );
 };

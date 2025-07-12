@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // <-- import Link
 import './Navbar.css';
 
 const Navbar = () => {
@@ -6,9 +7,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-logo">🔗 URL Shortener</div>
-
-      
+      <Link to="/" className="navbar-logo">🔗 URL Shortener</Link>
 
       <div className="navbar-toggle" onClick={() => setIsOpen(!isOpen)}>
         ☰

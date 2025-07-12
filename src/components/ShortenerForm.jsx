@@ -29,6 +29,17 @@ const ShortenerForm = () => {
       setLoading(false);
     }
   };
+const [copied, setCopied] = useState(false);
+
+const handleCopy = async (text) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500); // Reset after 1.5s
+  } catch (err) {
+    alert('Failed to copy');
+  }
+};
 
   return (
     <div className="form-wrapper">
@@ -46,10 +57,22 @@ const ShortenerForm = () => {
       </form>
 
       {shortUrl && (
-        <div className="form-result">
-          🔗 Short URL: <a href={shortUrl} target="_blank" rel="noopener noreferrer">{shortUrl}</a>
-        </div>
-      )}
+  <div className="form-result">
+    🔗 Short URL:
+    <a
+      href={shortUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="short-url-link"
+    >
+      {shortUrl}
+    </a>
+    <button className="copy-button" onClick={() => handleCopy(shortUrl)}>
+      {copied ? 'Copied!' : 'Copy'}
+    </button>
+  </div>
+)}
+
 
       {error && <div className="form-error">❌ {error}</div>}
     </div>

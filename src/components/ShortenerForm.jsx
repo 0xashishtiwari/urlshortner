@@ -6,28 +6,38 @@ const ShortenerForm = () => {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // 🌀 Loader state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setShortUrl('');
+    setLoading(true); // Start loader
 
     if (!url) {
       setError('Please enter a URL');
+      setLoading(false);
       return;
     }
 
     try {
       const res = await axios.post('https://urldb.up.railway.app/', { url });
-      console.log(res);
       setShortUrl(res.data.shortUrl);
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong');
+    } finally {
+      setLoading(false); // Stop loader
     }
   };
 
   return (
     <div className="form-wrapper">
+      {loading && (
+        <div className="loader-overlay">
+          <div className="loader"></div>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="shortener-form">
         <input
           type="text"

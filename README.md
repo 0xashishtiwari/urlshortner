@@ -1,8 +1,4 @@
-Sure! Here's a clean and professional `README.md` for your **URL Shortener React Frontend**:
 
----
-
-## 📘 README.md
 
 ```markdown
 # 🔗 URL Shortener - Frontend
@@ -38,21 +34,7 @@ _(Replace with your actual deployed link)_
 
 ---
 
-## 📁 Project Structure
 
-```
-
-src/
-├── components/
-│   ├── Navbar.js
-│   ├── Navbar.css
-│   ├── ShortenerForm.js
-│   └── ShortenerForm.css
-├── App.js
-├── App.css
-└── index.js
-
-````
 
 ---
 

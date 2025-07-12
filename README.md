@@ -1,8 +1,4 @@
-Sure! Here's a clean and professional `README.md` for your **URL Shortener React Frontend**:
 
----
-
-## 📘 README.md
 
 ```markdown
 # 🔗 URL Shortener - Frontend
@@ -38,21 +34,7 @@ _(Replace with your actual deployed link)_
 
 ---
 
-## 📁 Project Structure
 
-```
-
-src/
-├── components/
-│   ├── Navbar.js
-│   ├── Navbar.css
-│   ├── ShortenerForm.js
-│   └── ShortenerForm.css
-├── App.js
-├── App.css
-└── index.js
-
-````
 
 ---
 
@@ -85,32 +67,4 @@ npm start    # If using Create React App
 ```js
 axios.post('http://localhost:3000/', { url })
 ```
-
----
-
-## 🧑‍💻 Author
-
-* **Ashish Tiwari**
-  *Tier-3 College | MERN Developer | DSA Learner*
-  [LinkedIn](https://www.linkedin.com/in/your-profile/) • [GitHub](https://github.com/your-username)
-
----
-
-## 📦 Deployment
-
-This app is deployed on [Netlify](https://www.netlify.com/):
-
-```bash
-npm run build
-# Upload /dist or /build to Netlify
-```
-
----
-
-## 📃 License
-
-MIT License - Feel free to use, modify, and distribute.
-
-```
-
 

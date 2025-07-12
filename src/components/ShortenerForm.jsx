@@ -18,7 +18,7 @@ const ShortenerForm = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:3000/', { url });
+      const res = await axios.post('https://urldb.up.railway.app/', { url });
       console.log(res);
       setShortUrl(res.data.shortUrl);
     } catch (err) {

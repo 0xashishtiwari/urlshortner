@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './ShortenerForm.css';
+import { useNavigate } from 'react-router-dom';
 
 const ShortenerForm = () => {
   const [url, setUrl] = useState('');
   const [shortUrl, setShortUrl] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // 🌀 loader state
+  const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,17 +33,23 @@ const ShortenerForm = () => {
       setLoading(false);
     }
   };
-const [copied, setCopied] = useState(false);
 
-const handleCopy = async (text) => {
-  try {
-    await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500); // Reset after 1.5s
-  } catch (err) {
-    alert('Failed to copy');
-  }
-};
+  const handleCopy = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (err) {
+      alert('Failed to copy');
+    }
+  };
+
+  const handleClickRedirect = () => {
+    if (shortUrl) {
+      const code = shortUrl.split('/').pop();
+      navigate(`/${code}`);
+    }
+  };
 
   return (
     <div className="form-wrapper">
@@ -57,22 +67,20 @@ const handleCopy = async (text) => {
       </form>
 
       {shortUrl && (
-  <div className="form-result">
-    🔗 Short URL:
-    <a
-      href={shortUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="short-url-link"
-    >
-      {shortUrl}
-    </a>
-    <button className="copy-button" onClick={() => handleCopy(shortUrl)}>
-      {copied ? 'Copied!' : 'Copy'}
-    </button>
-  </div>
-)}
-
+        <div className="form-result">
+          🔗 Short URL:{' '}
+          <span
+            onClick={handleClickRedirect}
+            className="short-url-link"
+            style={{ cursor: 'pointer', color: '#3498db', textDecoration: 'underline' }}
+          >
+            {shortUrl}
+          </span>
+          <button className="copy-button" onClick={() => handleCopy(shortUrl)}>
+            {copied ? 'Copied!' : 'Copy'}
+          </button>
+        </div>
+      )}
 
       {error && <div className="form-error">❌ {error}</div>}
     </div>

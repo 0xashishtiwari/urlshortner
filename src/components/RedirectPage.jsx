@@ -4,30 +4,24 @@ import './RedirectPage.css';
 
 const RedirectPage = () => {
   const { shortcode } = useParams();
-  const [status, setStatus] = useState('loading');
+  const [message, setMessage] = useState('Redirecting...');
 
   useEffect(() => {
     const fetchUrl = async () => {
       try {
-        const response = await fetch(`https://urldb.up.railway.app/${shortcode}`);
+        const res = await fetch(`https://urldb.up.railway.app/${shortcode}`);
+        const data = await res.json();
 
-        if (!response.ok) {
-          // Handle 404 or 500 errors
-          setStatus('notfound');
-          return;
-        }
-
-        const data = await response.json();
-
-        if (data.url && typeof data.url === 'string') {
-          // Safe redirect
-          window.location.href = data.url;
+        if (data?.url) {
+          setMessage('🔁 Taking you to the destination...');
+          setTimeout(() => {
+            window.location.href = data.url;
+          }, 1200); // Smooth delay
         } else {
-          setStatus('notfound');
+          setMessage('❌ Short link not found');
         }
-      } catch (err) {
-        console.error('Fetch error:', err);
-        setStatus('error');
+      } catch {
+        setMessage('⚠️ Failed to fetch the URL');
       }
     };
 
@@ -35,15 +29,9 @@ const RedirectPage = () => {
   }, [shortcode]);
 
   return (
-    <div className="redirect-page">
-      {status === 'loading' && (
-        <>
-          <div className="spinner"></div>
-          <p>Redirecting...</p>
-        </>
-      )}
-      {status === 'notfound' && <p>❌ Link not found</p>}
-      {status === 'error' && <p>⚠️ Failed to fetch URL</p>}
+    <div className="redirect-container">
+      <div className="spinner"></div>
+      <p className="redirect-message">{message}</p>
     </div>
   );
 };

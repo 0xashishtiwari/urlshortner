@@ -1,18 +1,23 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
-import './App.css'; // Import global styles
+import './App.css';
 import Navbar from './components/Navbar';
 import ShortenerForm from './components/ShortenerForm';
+import RedirectPage from './components/RedirectPage';
+
 
 function App() {
   return (
-    <>
-      <Navbar/>
+    <Router>
+      <Navbar />
       <div className="container">
-      <ShortenerForm/>
+        <Routes>
+          <Route path="/" element={<ShortenerForm />} />
+          <Route path="/:shortcode" element={<RedirectPage/>} />
+        </Routes>
       </div>
-    </>
+    </Router>
   );
 }
 

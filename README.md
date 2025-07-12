@@ -70,24 +70,8 @@ axios.post('http://localhost:3000/', { url })
 
 ---
 
-## 🧑‍💻 Author
 
-* **Ashish Tiwari**
-  *Tier-3 College | MERN Developer | DSA Learner*
-  [LinkedIn](https://www.linkedin.com/in/your-profile/) • [GitHub](https://github.com/your-username)
 
----
-
-## 📦 Deployment
-
-This app is deployed on [Netlify](https://www.netlify.com/):
-
-```bash
-npm run build
-# Upload /dist or /build to Netlify
-```
-
----
 
 ## 📃 License
 

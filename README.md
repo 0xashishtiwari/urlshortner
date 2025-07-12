@@ -68,15 +68,3 @@ npm start    # If using Create React App
 axios.post('http://localhost:3000/', { url })
 ```
 
----
-
-
-
-
-## 📃 License
-
-MIT License - Feel free to use, modify, and distribute.
-
-```
-
-

@@ -1,6 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './ShortenerForm.css';
+import {
+  Box,
+  Button,
+  TextField,
+  Snackbar,
+  Alert,
+  Typography,
+  Paper,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useNavigate } from 'react-router-dom';
 
 const ShortenerForm = () => {
@@ -8,7 +20,7 @@ const ShortenerForm = () => {
   const [shortUrl, setShortUrl] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   const navigate = useNavigate();
 
@@ -18,8 +30,8 @@ const ShortenerForm = () => {
     setShortUrl('');
     setLoading(true);
 
-    if (!url) {
-      setError('Please enter a URL');
+    if (!url.trim()) {
+      setError('Please enter a valid URL');
       setLoading(false);
       return;
     }
@@ -34,13 +46,12 @@ const ShortenerForm = () => {
     }
   };
 
-  const handleCopy = async (text) => {
+  const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch (err) {
-      alert('Failed to copy');
+      await navigator.clipboard.writeText(shortUrl);
+      setSnackbar({ open: true, message: 'Copied to clipboard!', severity: 'success' });
+    } catch {
+      setSnackbar({ open: true, message: 'Failed to copy', severity: 'error' });
     }
   };
 
@@ -52,38 +63,73 @@ const ShortenerForm = () => {
   };
 
   return (
-    <div className="form-wrapper">
-      <form onSubmit={handleSubmit} className="shortener-form">
-        <input
-          type="text"
-          placeholder="Enter a long URL (e.g. https://example.com)"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          className="form-input"
-        />
-        <button type="submit" className="form-button" disabled={loading}>
-          {loading ? <div className="button-spinner"></div> : 'Shorten'}
-        </button>
-      </form>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        bgcolor: '#f0f2f5',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        p: 2,
+      }}
+    >
+      <Paper elevation={4} sx={{ p: 4, maxWidth: 500, width: '100%', borderRadius: 3 }}>
+        <Typography variant="h5" gutterBottom fontWeight={600}>
+          🔗 URL Shortener
+        </Typography>
 
-      {shortUrl && (
-        <div className="form-result">
-          🔗 Short URL:{' '}
-          <span
-            onClick={handleClickRedirect}
-            className="short-url-link"
-            style={{ cursor: 'pointer', color: '#3498db', textDecoration: 'underline' }}
+        <form onSubmit={handleSubmit}>
+          <TextField
+            fullWidth
+            label="Enter your long URL"
+            variant="outlined"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            error={!!error}
+            helperText={error}
+            sx={{ mb: 2 }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={loading}
+            startIcon={loading && <CircularProgress size={20} />}
           >
-            {shortUrl}
-          </span>
-          <button className="copy-button" onClick={() => handleCopy(shortUrl)}>
-            {copied ? 'Copied!' : 'Copy'}
-          </button>
-        </div>
-      )}
+            {loading ? 'Shortening...' : 'Shorten URL'}
+          </Button>
+        </form>
 
-      {error && <div className="form-error">❌ {error}</div>}
-    </div>
+        {shortUrl && (
+          <Box mt={3} p={2} bgcolor="#e3f2fd" borderRadius={2}>
+            <Typography variant="body1" fontWeight={500}>
+              Short URL:
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: '#1565c0', cursor: 'pointer', wordBreak: 'break-all' }}
+              onClick={handleClickRedirect}
+            >
+              {shortUrl}
+            </Typography>
+            <IconButton onClick={handleCopy} color="primary" size="small">
+              <ContentCopyIcon fontSize="small" />
+            </IconButton>
+          </Box>
+        )}
+
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={2000}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
+          <Alert severity={snackbar.severity} sx={{ width: '100%' }}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Paper>
+    </Box>
   );
 };
 

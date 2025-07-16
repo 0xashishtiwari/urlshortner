@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './RedirectPage.css';
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  Container,
+} from '@mui/material';
 
 const RedirectPage = () => {
   const { shortcode } = useParams();
@@ -18,7 +23,7 @@ const RedirectPage = () => {
           } else {
             setStatus('notfound');
           }
-        }, 800); // Optional smooth delay
+        }, 800);
       } catch {
         setStatus('error');
       }
@@ -27,21 +32,48 @@ const RedirectPage = () => {
     fetchUrl();
   }, [shortcode]);
 
+  const renderContent = () => {
+    switch (status) {
+      case 'loading':
+        return (
+          <>
+            <CircularProgress size={60} thickness={4} color="primary" />
+            <Typography mt={2} variant="h6">
+              Redirecting you safely...
+            </Typography>
+          </>
+        );
+      case 'notfound':
+        return (
+          <Typography variant="h6" color="error">
+            ❌ Sorry, this link doesn’t exist.
+          </Typography>
+        );
+      case 'error':
+        return (
+          <Typography variant="h6" color="warning.main">
+            ⚠️ Couldn’t fetch the link. Please try again later.
+          </Typography>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
-    <div className="redirect-page">
-      {status === 'loading' && (
-        <>
-          <img
-            src="/loader.gif"
-            alt="Loading..."
-            className="gif-spinner"
-          />
-          <p>Redirecting...</p>
-        </>
-      )}
-      {status === 'notfound' && <p>❌ Link not found</p>}
-      {status === 'error' && <p>⚠️ Failed to fetch URL</p>}
-    </div>
+    <Container
+      maxWidth="sm"
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+      }}
+    >
+      {renderContent()}
+    </Container>
   );
 };
 
